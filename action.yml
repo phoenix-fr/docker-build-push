@@ -16,12 +16,26 @@ inputs:
   GH_TOKEN:
     description: GitHub Token
     required: true
+  WITH_NPM_BUILD:
+    description: Force node version
+    required: false
+    default: 'false'
+  NODE_VERSION:
+    description: Force node version
+    required: false
+
 
 runs:
   using: composite
   steps:
     - name: Checkout repository
       uses: actions/checkout@v3
+
+    - name: Setup Node.js
+      if: ${{ inputs.WITH_NPM_BUILD === 'true' }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ vars.NODE_VERSION }}
 
     - name: Copy .env
       shell: bash
@@ -33,6 +47,20 @@ runs:
         registry: ${{ inputs.REGISTRY }}
         username: ${{ github.actor }}
         password: ${{ inputs.GH_TOKEN }}
+
+    - name: Login to NPM registry
+      if: ${{ inputs.WITH_NPM_BUILD === 'true' }}
+      run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.GH_TOKEN }}" > ~/.npmrc
+      shell: bash
+    - name: NPM Install
+      if: ${{ inputs.WITH_NPM_BUILD === 'true' }}
+      run: npm ci
+      shell: bash
+    - name: NPM Build
+      if: ${{ inputs.WITH_NPM_BUILD === 'true' }}
+      run: npm run build
+      shell: bash
+
     - name: Extract metadata (tags, labels) for Docker
       id: meta
       uses: docker/metadata-action@v4
