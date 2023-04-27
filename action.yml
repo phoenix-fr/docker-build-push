@@ -50,7 +50,8 @@ runs:
 
     - name: Login to NPM registry
       if: inputs.WITH_NPM_BUILD == 'true'
-      run: echo "//npm.pkg.github.com/:_authToken=${{ inputs.GH_TOKEN }}" > ~/.npmrc
+      run: echo "@phoenix-fr:registry=https://npm.pkg.github.com" > ~/.npmrc
+        && echo "//npm.pkg.github.com/:_authToken=${{ inputs.GH_TOKEN }}" >> ~/.npmrc
       shell: bash
     - name: NPM Install
       if: inputs.WITH_NPM_BUILD == 'true'
