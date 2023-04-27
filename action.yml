@@ -1,0 +1,72 @@
+name: Common build and push
+description: A GitHub Action that build and push image
+inputs:
+  REGISTRY:
+    description: Private registry
+    required: false
+    default: 'ghcr.io'
+  env:
+    description: Current target env
+    required: true
+  DOT_ENV:
+    description: Dot env content
+    required: false
+    default: ''
+  GH_TOKEN:
+    description: GitHub Token
+    required: true
+  remote_docker_host:
+    description: Remote Docker ssh IP
+    required: true
+  remote_docker_user:
+    description: Remote Docker ssh user
+    required: false
+    default: 'debian'
+  remote_docker_port:
+    description: Remote Docker ssh port ie (22)
+    required: false
+    default: '22'
+  fqdn:
+    description: FQDN of env
+    required: true
+  ssh_private_key:
+    description: SSH private key used to connect to the docker host
+    required: true
+  deploy_path:
+    description: The path where the stack files will be copied to. Default ~/docker-deployment.
+    required: false
+  stack_file:
+    description: Docker stack file used. Default is docker-compose.yml
+    required: false
+
+runs:
+  using: composite
+  steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Copy .env
+      shell: bash
+      run: echo "${{ inputs.DOT_ENV }}" > .env
+
+    - name: Log in to the Container registry
+      uses: docker/login-action@v2
+      with:
+        registry: ${{ env.REGISTRY }}
+        username: ${{ github.actor }}
+        password: ${{ inputs.GH_TOKEN }}
+    - name: Extract metadata (tags, labels) for Docker
+      id: meta
+      uses: docker/metadata-action@v4
+      with:
+        images: ${{ env.REGISTRY }}/${{ ${{ github.event.repository }} }}
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v4
+      with:
+        context: .
+        file: .docker-prod/Dockerfile
+        push: true
+        build-args: |
+          GITHUB_TOKEN=${{ inputs.GH_TOKEN }}
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
