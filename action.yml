@@ -33,7 +33,7 @@ runs:
       id: meta
       uses: docker/metadata-action@v4
       with:
-        images: ${{ inputs.REGISTRY }}/$GITHUB_REPOSITORY
+        images: ${{ inputs.REGISTRY }}/${{ github.repository }}
     - name: Build and push Docker image
       uses: docker/build-push-action@v4
       with:
