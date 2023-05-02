@@ -49,7 +49,7 @@ runs:
     - name: Extract certs
       if: inputs.CERT_ZIP_PASSWORD
       shell: bash
-      run: unzip -P ${{ inputs.CERT_ZIP_PASSWORD }} .docker-prod/certs/certs.zip .docker-prod/certs/
+      run: unzip -P ${{ inputs.CERT_ZIP_PASSWORD }} .docker-prod/certs/certs.zip -d .docker-prod/certs/
 
     - name: Copy .env
       shell: bash
