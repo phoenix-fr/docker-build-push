@@ -33,7 +33,6 @@ inputs:
   CERT_ZIP_PASSWORD:
     description: Cert Zip Password
     required: false
-    default: 'false'
 
 runs:
   using: composite
@@ -48,7 +47,7 @@ runs:
         node-version: ${{ inputs.NODE_VERSION }}
 
     - name: Extract certs
-      if: inputs.CERT_ZIP_PASSWORD != 'false'
+      if: inputs.CERT_ZIP_PASSWORD
       shell: bash
       run: unzip .docker-prod/certs/certs.zip -P ${{ inputs.CERT_ZIP_PASSWORD }} .docker-prod/certs/
 
