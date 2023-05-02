@@ -30,7 +30,9 @@ inputs:
   BUILD_ARGS:
     description: Other custom build args
     required: false
-
+  CERT_ZIP_PASSWORD:
+    description: Cert Zip Password
+    required: false
 
 runs:
   using: composite
@@ -44,10 +46,15 @@ runs:
       with:
         node-version: ${{ inputs.NODE_VERSION }}
 
+    - name: Extract certs
+      if: inputs.CERT_ZIP_PASSWORD
+      shell: bash
+      run: unzip .docker-prod/certs/certs.zip -P ${{ inputs.CERT_ZIP_PASSWORD }} .docker-prod/certs/
+
     - name: Copy .env
       shell: bash
       run: echo "${{ inputs.DOT_ENV }}" > ${{ inputs.DOT_ENV_FILENAME }}
-      
+
     - name: Copy auth.json
       shell: bash
       run: echo "${{ inputs.AUTH_JSON }}" > auth.json
