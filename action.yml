@@ -26,6 +26,9 @@ inputs:
   AUTH_JSON:
     description: auth.json for composer authentication
     required: false
+  BUILD_ARGS:
+    description: Other custom build args
+    required: false
 
 
 runs:
@@ -82,5 +85,6 @@ runs:
         push: true
         build-args: |
           GITHUB_TOKEN=${{ inputs.GH_TOKEN }}
+          ${{ inputs.BUILD_ARGS }}
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
