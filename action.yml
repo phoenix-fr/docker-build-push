@@ -23,6 +23,9 @@ inputs:
   NODE_VERSION:
     description: Force node version
     required: false
+  AUTH_JSON:
+    description: auth.json for composer authentication
+    required: false
 
 
 runs:
@@ -40,6 +43,10 @@ runs:
     - name: Copy .env
       shell: bash
       run: echo "${{ inputs.DOT_ENV }}" > ${{ inputs.DOT_ENV_FILENAME }}
+      
+    - name: Copy auth.json
+      shell: bash
+      run: echo "${{ inputs.AUTH_JSON }}" > auth.json
 
     - name: Log in to the Container registry
       uses: docker/login-action@v2
