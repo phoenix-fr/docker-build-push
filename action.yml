@@ -26,6 +26,7 @@ inputs:
   AUTH_JSON:
     description: auth.json for composer authentication
     required: false
+    default: '{}'
   BUILD_ARGS:
     description: Other custom build args
     required: false
