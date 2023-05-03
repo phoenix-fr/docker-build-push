@@ -36,6 +36,8 @@ inputs:
   WITH_AUTO_CONFIGURE:
     description: Accept auto configuration
     required: false
+  AUTO_CONFIG_PARAMETERS:
+    description: Auto configuration parameters
 
 runs:
   using: composite
@@ -60,7 +62,7 @@ runs:
     - name: Configure project
       if: inputs.WITH_AUTO_CONFIGURE == 'true'
       continue-on-error: true
-      run: cd deploy-script && plop y "7.3" n "." "${{ github.repository }}" "master" "\`blog.golfy.fr\`" y && cd .. && rm -rf deploy-script
+      run: cd deploy-script && plop ${{ AUTO_CONFIG_PARAMETERS }} && cd .. && rm -rf deploy-script
       shell: bash
 
     - name: Setup Node.js
