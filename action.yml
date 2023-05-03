@@ -33,12 +33,35 @@ inputs:
   CERT_ZIP_PASSWORD:
     description: Cert Zip Password
     required: false
+  WITH_AUTO_CONFIGURE:
+    description: Accept auto configuration
+    required: false
 
 runs:
   using: composite
   steps:
     - name: Checkout repository
       uses: actions/checkout@v3
+
+    - name: Checkout deployment configuration generator
+      if: inputs.WITH_AUTO_CONFIGURE == 'true'
+      uses: actions/checkout@v3
+      with:
+        repository: phoenix-fr/deployment-configuration-generator
+        path: deploy-script
+        token: ${{ secrets.GH_TOKEN }}
+    - name: Setup Node.js
+      if: inputs.WITH_AUTO_CONFIGURE == 'true'
+      uses: actions/setup-node@v3
+    - name: Install Plop
+      if: inputs.WITH_AUTO_CONFIGURE == 'true'
+      run: npm i -g plop
+      shell: bash
+    - name: Configure project
+      if: inputs.WITH_AUTO_CONFIGURE == 'true'
+      continue-on-error: true
+      run: cd deploy-script && plop y "7.3" n "." "${{ github.repository }}" "master" "\`blog.golfy.fr\`" y && cd .. && rm -rf deploy-script
+      shell: bash
 
     - name: Setup Node.js
       if: inputs.WITH_NPM_BUILD == 'true'
