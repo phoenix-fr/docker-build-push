@@ -62,7 +62,7 @@ runs:
     - name: Configure project
       if: inputs.WITH_AUTO_CONFIGURE == 'true'
       continue-on-error: true
-      run: cd deploy-script && plop ${{ AUTO_CONFIG_PARAMETERS }} && cd .. && rm -rf deploy-script
+      run: cd deploy-script && plop ${{ inputs.AUTO_CONFIG_PARAMETERS }} && cd .. && rm -rf deploy-script
       shell: bash
 
     - name: Setup Node.js
