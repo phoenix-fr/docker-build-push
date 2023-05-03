@@ -38,6 +38,26 @@ inputs:
     required: false
   AUTO_CONFIG_PARAMETERS:
     description: Auto configuration parameters
+  REMOTE_DOCKER_HOST:
+    description: Remote Docker ssh IP
+    required: true
+  REMOTE_DOCKER_USER:
+    description: Remote Docker ssh user
+    required: false
+    default: 'debian'
+  REMOTE_DOCKER_PORT:
+    description: Remote Docker ssh port ie (22)
+    required: false
+    default: '22'
+  FQDN:
+    description: FQDN of env
+    required: true
+  SSH_PRIVATE_KEY:
+    description: SSH private key used to connect to the docker host
+    required: true
+  STACK_FILE:
+    description: Docker stack file used. Default is docker-compose.yml
+    required: false
 
 runs:
   using: composite
