@@ -121,3 +121,20 @@ runs:
           ${{ inputs.BUILD_ARGS }}
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
+
+    - name: Apply env
+      shell: bash
+      run: |
+        export STACK=${{ github.event.repository.name }}
+        envsubst < ${{ inputs.STACK_FILE }} > temp.1
+        rm -f ${{ inputs.STACK_FILE }}
+        mv temp.1 ${{ inputs.STACK_FILE }}
+    - name: Deploy to Docker swarm
+      uses: phoenix-fr/docker-deployment-action@v2.0.15
+      with:
+        remote_docker_host: ${{ inputs.REMOTE_DOCKER_USER }}@${{ inputs.REMOTE_DOCKER_HOST }}
+        remote_docker_port: ${{ inputs.REMOTE_DOCKER_PORT }}
+        ssh_private_key: ${{ inputs.SSH_PRIVATE_KEY }}
+        stack_file_name: ${{ inputs.STACK_FILE }}
+        gh_token: ${{ inputs.GH_TOKEN }}
+        args: ${{ github.event.repository.name }}
