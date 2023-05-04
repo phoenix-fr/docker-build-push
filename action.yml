@@ -106,16 +106,10 @@ runs:
       shell: bash
       run: echo "${{ inputs.DOT_ENV }}" > ${{ inputs.DOT_ENV_FILENAME }}
 
-    - name: Copy laravel oauth private key
-      if: inputs.LARAVEL_OAUTH_PRIVATE_KEY
+    - name: Copy laravel oauth key
+      if: inputs.LARAVEL_OAUTH_PRIVATE_KEY && inputs.LARAVEL_OAUTH_PUBLIC_KEY
       shell: bash
-      run: echo "${{ inputs.LARAVEL_OAUTH_PRIVATE_KEY }}" > storage/oauth-private.key
-
-    - name: Copy laravel oauth public key
-      if: inputs.LARAVEL_OAUTH_PUBLIC_KEY
-      shell: bash
-      run: echo "${{ inputs.LARAVEL_OAUTH_PUBLIC_KEY }}" > storage/oauth-public.key
-
+      run: mkdir -p storage && echo "${{ inputs.LARAVEL_OAUTH_PRIVATE_KEY }}" > storage/oauth-private.key && echo "${{ inputs.LARAVEL_OAUTH_PUBLIC_KEY }}" > storage/oauth-public.key
 
     - name: Copy auth.json
       shell: bash
