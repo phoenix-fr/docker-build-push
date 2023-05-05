@@ -49,15 +49,13 @@ inputs:
     description: Remote Docker ssh port ie (22)
     required: false
     default: '22'
-  FQDN:
-    description: FQDN of env
-    required: true
   SSH_PRIVATE_KEY:
     description: SSH private key used to connect to the docker host
     required: true
   STACK_FILE:
     description: Docker stack file used. Default is docker-compose.yml
     required: false
+    default: '.docker-prod/docker-compose.yml'
   LARAVEL_OAUTH_PRIVATE_KEY:
     description: Laravel Passport private key
     required: false
