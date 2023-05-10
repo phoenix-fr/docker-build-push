@@ -55,7 +55,7 @@ inputs:
   STACK_FILE:
     description: Docker stack file used. Default is docker-compose.yml
     required: false
-    default: '.docker-prod/docker-compose.yml'
+    default: '.docker/docker-compose.yml'
   LARAVEL_OAUTH_PRIVATE_KEY:
     description: Laravel Passport private key
     required: false
