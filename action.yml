@@ -161,7 +161,7 @@ runs:
         rm -f ${{ inputs.STACK_FILE }}
         mv temp.1 ${{ inputs.STACK_FILE }}
     - name: Deploy to Docker swarm
-      uses: phoenix-fr/docker-deployment-action@v2.0.15
+      uses: phoenix-fr/docker-deployment-action@v2.0.16
       with:
         remote_docker_host: ${{ inputs.REMOTE_DOCKER_USER }}@${{ inputs.REMOTE_DOCKER_HOST }}
         remote_docker_port: ${{ inputs.REMOTE_DOCKER_PORT }}
