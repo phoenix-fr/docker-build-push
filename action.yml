@@ -36,6 +36,10 @@ inputs:
   WITH_AUTO_CONFIGURE:
     description: Accept auto configuration
     required: false
+  AUTO_CONFIGURE_JSON_PATH:
+    description: specific auto configure json path
+    required: false
+    default: '../plop.json'
   REMOTE_DOCKER_HOST:
     description: Remote Docker ssh IP
     required: true
@@ -84,7 +88,7 @@ runs:
     - name: Configure project
       if: inputs.WITH_AUTO_CONFIGURE == 'true'
       continue-on-error: true
-      run: cd deploy-script && plop "../plop.json" "${{ inputs.BRANCH_NAME }}" "${{ inputs.PROJECT_NAME }}" && cd .. && rm -rf deploy-script
+      run: cd deploy-script && plop "${{ inputs.AUTO_CONFIGURE_JSON_PATH }}" "${{ inputs.BRANCH_NAME }}" "${{ inputs.PROJECT_NAME }}" && cd .. && rm -rf deploy-script
       shell: bash
 
     - name: Setup Node.js
