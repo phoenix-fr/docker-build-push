@@ -155,7 +155,7 @@ runs:
     - name: Apply env
       shell: bash
       run: |
-        export STACK=${{ github.event.repository.name }}
+        export STACK=${{ github.event.repository.name }}-${{ github.ref_name }}
         envsubst < ${{ inputs.STACK_FILE }} > temp.1
         rm -f ${{ inputs.STACK_FILE }}
         mv temp.1 ${{ inputs.STACK_FILE }}
@@ -167,4 +167,4 @@ runs:
         ssh_private_key: ${{ inputs.SSH_PRIVATE_KEY }}
         stack_file_name: ${{ inputs.STACK_FILE }}
         gh_token: ${{ inputs.GH_TOKEN }}
-        args: ${{ github.event.repository.name }}
+        args: ${{ github.event.repository.name }}-${{ github.ref_name }}
