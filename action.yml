@@ -153,10 +153,10 @@ runs:
         labels: ${{ steps.meta.outputs.labels }}
     - id: generate-mysql-password
       name: Generate MYSQL Password
-      uses: Ba4bes/Password-Generator@v1.0
+      uses: Ba4bes/Password-Generator@v0.1
     - id: generate-minio-password
       name: Generate Minio Password
-      uses: Ba4bes/Password-Generator@v1.0
+      uses: Ba4bes/Password-Generator@v0.1
     - name: Apply env
       shell: bash
       run: |
