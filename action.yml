@@ -152,15 +152,17 @@ runs:
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
     - id: generate-mysql-password
-      uses: Ba4bes/Password-Generator@v0.1
+      name: Generate MYSQL Password
+      uses: Ba4bes/Password-Generator@v1.0
     - id: generate-minio-password
-      uses: Ba4bes/Password-Generator@v0.1
+      name: Generate Minio Password
+      uses: Ba4bes/Password-Generator@v1.0
     - name: Apply env
       shell: bash
       run: |
         source ${{ inputs.DOT_ENV_FILENAME }}
-        export MYSQL_ROOT_PASSWORD=${{ steps.generate-mysql-password.outputs.password }}
-        export MINIO_ROOT_PASSWORD=${{ steps.generate-minio-password.outputs.password }}
+        export MYSQL_ROOT_PASSWORD="${{ steps.generate-mysql-password.outputs.password }}"
+        export MINIO_ROOT_PASSWORD="${{ steps.generate-minio-password.outputs.password }}"
         export STACK=${{ github.event.repository.name }}-${{ github.ref_name }}
         envsubst < ${{ inputs.STACK_FILE }} > temp.1
         rm -f ${{ inputs.STACK_FILE }}
