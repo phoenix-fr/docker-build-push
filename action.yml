@@ -155,6 +155,7 @@ runs:
     - name: Apply env
       shell: bash
       run: |
+        source ${{ inputs.DOT_ENV_FILENAME }}
         export STACK=${{ github.event.repository.name }}-${{ github.ref_name }}
         envsubst < ${{ inputs.STACK_FILE }} > temp.1
         rm -f ${{ inputs.STACK_FILE }}
