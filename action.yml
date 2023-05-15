@@ -154,7 +154,6 @@ runs:
     - name: Apply env
       shell: bash
       run: |
-        source ${{ inputs.DOT_ENV_FILENAME }}
         export MYSQL_ROOT_PASSWORD="secret123456"
         export MINIO_ROOT_PASSWORD="secret123456"
         export STACK=${{ github.event.repository.name }}-${{ github.ref_name }}
