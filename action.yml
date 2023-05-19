@@ -103,8 +103,15 @@ runs:
 
     - name: Copy .env
       shell: bash
-      run: echo "${{ inputs.DOT_ENV }}" > ${{ inputs.DOT_ENV_FILENAME }}
-
+      run: |
+        echo "${{ inputs.DOT_ENV }}" > ${{ inputs.DOT_ENV_FILENAME }}
+        export BRANCH_NAME="${{ github.ref_name }}"
+        export MYSQL_ROOT_PASSWORD="secret123456"
+        export MINIO_ROOT_PASSWORD="secret123456"
+        export STACK="${{ github.event.repository.name }}-${{ github.ref_name }}"
+        envsubst < ${{ inputs.DOT_ENV_FILENAME }} > temp.1
+        rm -f ${{ inputs.DOT_ENV_FILENAME }}
+        mv temp.1 ${{ inputs.DOT_ENV_FILENAME }}
     - name: Copy laravel oauth key
       if: inputs.LARAVEL_OAUTH_PRIVATE_KEY && inputs.LARAVEL_OAUTH_PUBLIC_KEY
       shell: bash
@@ -154,9 +161,6 @@ runs:
     - name: Apply env
       shell: bash
       run: |
-        export MYSQL_ROOT_PASSWORD="secret123456"
-        export MINIO_ROOT_PASSWORD="secret123456"
-        export STACK=${{ github.event.repository.name }}-${{ github.ref_name }}
         envsubst < ${{ inputs.STACK_FILE }} > temp.1
         rm -f ${{ inputs.STACK_FILE }}
         mv temp.1 ${{ inputs.STACK_FILE }}
