@@ -105,11 +105,8 @@ runs:
       shell: bash
       run: |
         echo "${{ inputs.DOT_ENV }}" > ${{ inputs.DOT_ENV_FILENAME }}
-        source .env.local
-        export STACK="${{ github.event.repository.name }}-${{ github.ref_name }}"
-        cat .env.local
-        envsubst < ${{ inputs.DOT_ENV_FILENAME }} > temp.1
-        rm -f ${{ inputs.DOT_ENV_FILENAME }}
+        source .env.local && envsubst < ${{ inputs.DOT_ENV_FILENAME }} > temp.1 
+        rm -f ${{ inputs.DOT_ENV_FILENAME }} 
         mv temp.1 ${{ inputs.DOT_ENV_FILENAME }}
     - name: Copy laravel oauth key
       if: inputs.LARAVEL_OAUTH_PRIVATE_KEY && inputs.LARAVEL_OAUTH_PUBLIC_KEY
@@ -157,12 +154,6 @@ runs:
           ${{ inputs.BUILD_ARGS }}
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
-    - name: Apply env
-      shell: bash
-      run: |
-        envsubst < ${{ inputs.STACK_FILE }} > temp.1
-        rm -f ${{ inputs.STACK_FILE }}
-        mv temp.1 ${{ inputs.STACK_FILE }}
     - name: Deploy to Docker swarm
       uses: phoenix-fr/docker-deployment-action@v2.0.16
       with:
