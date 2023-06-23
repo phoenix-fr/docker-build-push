@@ -113,7 +113,9 @@ runs:
       run: |
         echo "${{ inputs.DOT_ENV }}" > ${{ inputs.DOT_ENV_FILENAME }}
         echo $'\nCUSTOM_API_URL="${{ inputs.CUSTOM_API_URL }}"' >> .env.local
-        set -a && source .env.local && set +a && envsubst < ${{ inputs.DOT_ENV_FILENAME }} > temp.1 
+        set -o allexport 
+        source .env.local && envsubst < ${{ inputs.DOT_ENV_FILENAME }} > temp.1 
+        set +o allexport
         cat temp.1
         rm -f ${{ inputs.DOT_ENV_FILENAME }} 
         mv temp.1 ${{ inputs.DOT_ENV_FILENAME }}
