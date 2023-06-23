@@ -67,6 +67,10 @@ inputs:
   CUSTOM_API_URL:
     description: Custom URL for front to call API
     required: false
+  ENV_NAME:
+    description: Environment name
+    required: false
+    default: 'production'
 
 runs:
   using: composite
@@ -90,7 +94,7 @@ runs:
       shell: bash
     - name: Configure project
       if: inputs.WITH_AUTO_CONFIGURE == 'true'
-      run: cd deploy-script && plop "${{ inputs.AUTO_CONFIGURE_JSON_PATH }}" "${{ github.ref_name }}" "${{ github.event.repository.name }}" && cd .. && rm -rf deploy-script
+      run: cd deploy-script && plop "${{ inputs.AUTO_CONFIGURE_JSON_PATH }}" "${{ github.ref_name }}" "${{ github.event.repository.name }}" "${{ inputs.ENV_NAME }}" && cd .. && rm -rf deploy-script
       shell: bash
 
     - name: Setup Node.js
