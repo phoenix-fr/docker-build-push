@@ -64,6 +64,9 @@ inputs:
   LARAVEL_OAUTH_PUBLIC_KEY:
     description: Laravel Passport public key
     required: false
+  CUSTOM_API_URL:
+    description: Custom URL for front to call API
+    required: false
 
 runs:
   using: composite
@@ -105,6 +108,7 @@ runs:
       shell: bash
       run: |
         echo "${{ inputs.DOT_ENV }}" > ${{ inputs.DOT_ENV_FILENAME }}
+        echo "\nCUSTOM_API_URL=${{ inputs.CUSTOM_API_URL }}" >> .env.local
         source .env.local && envsubst < ${{ inputs.DOT_ENV_FILENAME }} > temp.1 
         rm -f ${{ inputs.DOT_ENV_FILENAME }} 
         mv temp.1 ${{ inputs.DOT_ENV_FILENAME }}
