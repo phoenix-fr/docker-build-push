@@ -112,7 +112,7 @@ runs:
       shell: bash
       run: |
         echo "${{ inputs.DOT_ENV }}" > ${{ inputs.DOT_ENV_FILENAME }}
-        echo $'\nCUSTOM_API_URL="${{ inputs.CUSTOM_API_URL }}"' >> .env.local
+        export CUSTOM_API_URL="${{ inputs.CUSTOM_API_URL }}"
         set -o allexport 
         source .env.local
         set +o allexport
