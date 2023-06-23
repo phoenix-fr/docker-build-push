@@ -115,7 +115,7 @@ runs:
         cat ${{ inputs.DOT_ENV_FILENAME }}
         chmod u+x replace_env.sh
         ./replace_env.sh ${{ inputs.DOT_ENV_FILENAME }}
-        sed -i 's#${CUSTOM_API_URL}#${{ inputs.CUSTOM_API_URL }}#g' ${{ inputs.DOT_ENV_FILENAME }}
+        sed -i 's#{{CUSTOM_API_URL}}#${{ inputs.CUSTOM_API_URL }}#g' ${{ inputs.DOT_ENV_FILENAME }}
         cat ${{ inputs.DOT_ENV_FILENAME }}
     - name: Copy laravel oauth key
       if: inputs.LARAVEL_OAUTH_PRIVATE_KEY && inputs.LARAVEL_OAUTH_PUBLIC_KEY
