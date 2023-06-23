@@ -170,4 +170,4 @@ runs:
         ssh_private_key: ${{ inputs.SSH_PRIVATE_KEY }}
         stack_file_name: ${{ inputs.STACK_FILE }}
         gh_token: ${{ inputs.GH_TOKEN }}
-        args: ${{ github.event.repository.name }}-${{ github.ref_name }}
+        args: ${{ github.event.repository.name }}${{ inputs.ENV_NAME == 'production' && '' || '-' }}${{ inputs.ENV_NAME == 'production' && '' || ${{ inputs.ENV_NAME}} }}-${{ github.ref_name }}
