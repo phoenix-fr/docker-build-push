@@ -112,6 +112,7 @@ runs:
       shell: bash
       run: |
         echo "${{ inputs.DOT_ENV }}" > ${{ inputs.DOT_ENV_FILENAME }}
+        cat ${{ inputs.DOT_ENV_FILENAME }}
         chmod u+x replace_env.sh
         ./replace_env.sh ${{ inputs.DOT_ENV_FILENAME }}
         sed -i 's#${CUSTOM_API_URL}#${{ inputs.CUSTOM_API_URL }}#g' ${{ inputs.DOT_ENV_FILENAME }}
